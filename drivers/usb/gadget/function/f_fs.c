@@ -2072,8 +2072,11 @@ static void ffs_func_eps_disable(struct ffs_function *func)
 	unsigned short count;
 	unsigned long flags;
 
-	ffs_log("enter: state %d setup_state %d flag %lu", func->ffs->state,
-		func->ffs->setup_state, func->ffs->flags);
+	#define ffs_log2(ffs, fmt, ...) \
+	ipc_log_string((ffs)->ipc_log, "%s: " fmt, __func__, ##__VA_ARGS__)
+
+	ffs_log2(func->ffs, "enter: state %d setup_state %d flag %lu",
+            func->ffs->state, func->ffs->setup_state, func->ffs->flags);
 
 	spin_lock_irqsave(&func->ffs->eps_lock, flags);
 	count = func->ffs->eps_count;
